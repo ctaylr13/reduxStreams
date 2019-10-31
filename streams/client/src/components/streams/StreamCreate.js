@@ -1,5 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { createStream } from '../../actions';
 
 class StreamCreate extends React.Component {
     renderError({ error, touched }) {
@@ -24,8 +26,8 @@ class StreamCreate extends React.Component {
         );
     }
 
-    onSubmit(formValues) {
-        console.log(formValues); // prevent running on start 
+    onSubmit = (formValues) => {
+        this.props.createStream(formValues); // prevent running on start 
     }
 
     render () {
@@ -65,7 +67,9 @@ const validate = (formValues) => {
 };
 //note this is different from connect. not actually using connect, its using 
 // the redux form library
-export default reduxForm({
+const formWrapped = reduxForm({
     form: 'streamCreate',
     validate: validate
 })(StreamCreate);
+
+export default connect(null, { createStream })(formWrapped);
